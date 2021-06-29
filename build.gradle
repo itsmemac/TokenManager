@@ -1,9 +1,8 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -34,14 +33,14 @@ tasks.withType(ShadowJar) {
     destinationDir = file("$rootDir/out/")
 }
 
-processResources {
-    def group = project.group.toString() + "." + project.name.toLowerCase() + ".shaded"
-
-    from(sourceSets.main.resources.srcDirs) {
-        include '**/*.yml'
-        filter(ReplaceTokens, tokens: [NAME: project.name, VERSION: project.version, SHADED_GROUP: group])
-    }
-}
+//processResources {
+//    def group = project.group.toString() + "." + project.name.toLowerCase() + ".shaded"
+//
+//    from(sourceSets.main.resources.srcDirs) {
+//        include '**/*.yml'
+//        filter(ReplaceTokens, tokens: [NAME: project.name, VERSION: project.version, SHADED_GROUP: group])
+//    }
+//}
 
 repositories {
     mavenCentral()
@@ -57,42 +56,42 @@ repositories {
     }
 
     maven {
-        name 'vault-repo'
-        url 'http://nexus.hc.to/content/repositories/pub_releases'
-    }
-
-    maven {
         name 'mvdw-repo'
-        url 'http://repo.mvdw-software.be/content/groups/public/'
+        url 'https://repo.mvdw-software.com/content/groups/public/'
     }
 
     maven {
         name 'clip-repo'
-        url 'http://repo.extendedclip.com/content/repositories/placeholderapi/'
+        url 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
 
-    maven { url = 'https://repo.codemc.org/repository/maven-public/' }
-
     maven {
-        name 'inventive-repo'
-        url 'https://repo.inventivetalent.org/content/groups/public/'
+        name 'codemc-public'
+        url 'https://repo.codemc.org/repository/maven-public/'
     }
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
-    compile 'net.milkbowl.vault:VaultAPI:1.6'
-    compile 'me.clip:placeholderapi:2.10.5'
-    compile ('be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT') { transitive = false }
-    compile 'org.projectlombok:lombok:1.16.20'
+    // Project Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
-    // shaded dependencies
-    compile 'redis.clients:jedis:2.9.0'
-    compile 'org.apache.commons:commons-pool2:2.4.2'
-    compile 'com.zaxxer:HikariCP:2.7.8'
-    compile 'org.slf4j:slf4j-nop:1.7.25'
-    compile 'org.bstats:bstats-bukkit:1.7'
-    compile 'org.inventivetalent.spiget-update:bukkit:1.4.2-SNAPSHOT'
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    // Provided Dependencies
+    compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly 'net.milkbowl.vault:VaultAPI:1.7'
+    compileOnly 'me.clip:placeholderapi:2.10.5'
+    compileOnly ('be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT') { transitive = false }
+
+    // Shaded Dependencies
+    implementation 'redis.clients:jedis:2.9.0'
+    implementation 'org.apache.commons:commons-pool2:2.4.2'
+    implementation 'com.zaxxer:HikariCP:2.7.8'
+    implementation 'org.slf4j:slf4j-nop:1.7.25'
+    implementation 'org.bstats:bstats-bukkit:1.7'
+    // implementation 'org.inventivetalent.spiget-update:bukkit:1.4.2-SNAPSHOT'
 }
 
 shadowJar {
@@ -104,8 +103,8 @@ shadowJar {
         include(dependency('org.apache.commons:.*'))
         include(dependency('com.zaxxer:.*'))
         include(dependency('org.slf4j:.*'))
-        include(dependency('org.bstats:.*'))
-        include(dependency('org.inventivetalent.spiget-update:.*'))
+//        include(dependency('org.bstats:.*'))
+//        include(dependency('org.inventivetalent.spiget-update:.*'))
     }
 
     def group = project.group.toString() + "." + project.name.toLowerCase() + ".shaded."
@@ -114,8 +113,8 @@ shadowJar {
     relocate 'org.apache.commons.pool2', group + 'apache.commons.pool2'
     relocate 'com.zaxxer.hikari', group + 'zaxxer.hikari'
     relocate 'org.slf4j', group + "slf4j"
-    relocate 'org.bstats', group + 'bstats'
-    relocate 'org.inventivetalent.update.spiget', group + 'update.spiget'
+//    relocate 'org.bstats', group + 'bstats'
+//    relocate 'org.inventivetalent.update.spiget', group + 'update.spiget'
 }
 
 build.dependsOn(shadowJar)

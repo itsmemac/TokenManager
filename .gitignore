@@ -1,5 +1,25 @@
+# Mac OSX
 .DS_Store
-.gradle/
+._*
+
+# Java
+*.class
+*.jar
+
+# IntelliJ IDEA
 .idea/
+*.iml
+
+# Eclipse IDE
+.settings/
+bin/
+.classpath
+.project
+
+# Maven
+target/
+dependency-reduced-pom.xml
+
+# Gradle
+.gradle/
 build/
-out/
