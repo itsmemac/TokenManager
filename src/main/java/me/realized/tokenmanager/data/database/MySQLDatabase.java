@@ -1,7 +1,5 @@
 package me.realized.tokenmanager.data.database;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,14 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import lombok.Getter;
-import me.realized.tokenmanager.TokenManagerPlugin;
-import me.realized.tokenmanager.command.commands.subcommands.OfflineCommand.ModifyType;
-import me.realized.tokenmanager.config.Config;
-import me.realized.tokenmanager.util.Log;
-import me.realized.tokenmanager.util.NumberUtil;
-import me.realized.tokenmanager.util.profile.ProfileUtil;
-import org.apache.commons.lang.StringEscapeUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -39,6 +30,17 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import lombok.Getter;
+import me.realized.tokenmanager.TokenManagerPlugin;
+import me.realized.tokenmanager.command.commands.subcommands.OfflineCommand.ModifyType;
+import me.realized.tokenmanager.config.Config;
+import me.realized.tokenmanager.util.Log;
+import me.realized.tokenmanager.util.NumberUtil;
+import me.realized.tokenmanager.util.profile.ProfileUtil;
+import org.apache.commons.lang.StringEscapeUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -76,7 +78,7 @@ public class MySQLDatabase extends AbstractDatabase {
             .replace("%port%", config.getMysqlPort())
             .replace("%database%", config.getMysqlDatabase())
         );
-        hikariConfig.setDriverClassName("com.mysql.jdbc.Driver");
+        hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
         hikariConfig.setUsername(config.getMysqlUsername());
         hikariConfig.setPassword(config.getMysqlPassword());
 
