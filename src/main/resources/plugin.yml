@@ -1,12 +1,20 @@
-name: TokenManager
-main: me.realized.tokenmanager.TokenManagerPlugin
-version: "3.2.6-SNAPSHOT"
-softdepend: [MVdWPlaceholderAPI, PlaceholderAPI, Vault]
-api-version: 1.13
+name: "TokenManager"
+prefix: "Token Manager"
+description: "A fork of Realized/TokenManager made for 1.17.1."
+website: "https://www.sirblobman.xyz/"
 
-author: Realized
-description: A simple economy plugin for your server.
-website: https://www.spigotmc.org/resources/tokenmanager.8610/
+main: "me.realized.tokenmanager.TokenManagerPlugin"
+version: "4.0.0-SirBlobman"
+api-version: "1.17"
+
+softdepend:
+  - "MVdWPlaceholderAPI"
+  - "PlaceholderAPI"
+  - "Vault"
+
+authors:
+  - "Realized"
+  - "SirBlobman"
 
 commands:
    token:

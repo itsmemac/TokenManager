@@ -1,18 +1,19 @@
 package me.realized.tokenmanager.util.profile;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * Modified version of UUIDFetcher by evilmidget38
@@ -21,7 +22,6 @@ import org.json.simple.parser.JSONParser;
 final class UUIDFetcher {
 
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
-    private static final JSONParser JSON_PARSER = new JSONParser();
     private static final Cache<String, UUID> NAME_TO_UUID = CacheBuilder.newBuilder()
         .concurrencyLevel(4)
         .maximumSize(1000)
@@ -38,14 +38,19 @@ final class UUIDFetcher {
         }
 
         final HttpURLConnection connection = createConnection();
-        final String body = JSONArray.toJSONString(Collections.singletonList(name));
+        JsonArray names = new JsonArray();
+        names.add(name);
+        
+        final String body = names.toString();
         writeBody(connection, body);
 
         try (Reader reader = new InputStreamReader(connection.getInputStream())) {
-            JSONArray array = (JSONArray) JSON_PARSER.parse(reader);
-            final JSONObject profile = (JSONObject) array.get(0);
+            JsonElement parse = new JsonParser().parse(reader);
+            JsonArray jsonArray = parse.getAsJsonArray();
+            JsonObject profile = jsonArray.get(0).getAsJsonObject();
+            
             final UUID uuid;
-            NAME_TO_UUID.put((String) profile.get("name"), uuid = get((String) profile.get("id")));
+            NAME_TO_UUID.put(profile.get("name").getAsString(), uuid = get(profile.get("id").getAsString()));
             return uuid.toString();
         }
     }

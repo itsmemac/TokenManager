@@ -1,22 +1,12 @@
 package me.realized.tokenmanager.util.inventory;
 
-import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.OptionalLong;
 import java.util.function.Consumer;
-import me.realized.tokenmanager.util.EnumUtil;
-import me.realized.tokenmanager.util.NumberUtil;
-import me.realized.tokenmanager.util.StringUtil;
-import me.realized.tokenmanager.util.compat.CompatUtil;
-import me.realized.tokenmanager.util.compat.Items;
-import me.realized.tokenmanager.util.compat.Potions;
-import me.realized.tokenmanager.util.compat.Potions.PotionType;
-import me.realized.tokenmanager.util.compat.Skulls;
-import me.realized.tokenmanager.util.compat.SpawnEggs;
-import me.realized.tokenmanager.util.compat.Terracottas;
+
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -29,6 +19,18 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import com.google.common.collect.Lists;
+import me.realized.tokenmanager.util.EnumUtil;
+import me.realized.tokenmanager.util.NumberUtil;
+import me.realized.tokenmanager.util.StringUtil;
+import me.realized.tokenmanager.util.compat.CompatUtil;
+import me.realized.tokenmanager.util.compat.Items;
+import me.realized.tokenmanager.util.compat.Potions;
+import me.realized.tokenmanager.util.compat.Potions.PotionType;
+import me.realized.tokenmanager.util.compat.Skulls;
+import me.realized.tokenmanager.util.compat.SpawnEggs;
+import me.realized.tokenmanager.util.compat.Terracottas;
 
 public final class ItemUtil {
 
@@ -221,12 +223,7 @@ public final class ItemUtil {
         }
 
         if (key.equalsIgnoreCase("unbreakable") && value.equalsIgnoreCase("true")) {
-            if (CompatUtil.isPre1_12()) {
-                meta.spigot().setUnbreakable(true);
-            } else {
-                meta.setUnbreakable(true);
-            }
-
+            meta.setUnbreakable(true);
             item.setItemMeta(meta);
             return;
         }
