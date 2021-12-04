@@ -8,9 +8,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,14 +32,8 @@ import me.realized.tokenmanager.util.Loadable;
 import me.realized.tokenmanager.util.Log;
 import me.realized.tokenmanager.util.NumberUtil;
 import me.realized.tokenmanager.util.Reloadable;
-import me.realized.tokenmanager.util.StringUtil;
 
 public class TokenManagerPlugin extends JavaPlugin implements TokenManager, Listener {
-
-    private static final int RESOURCE_ID = 8610;
-    private static final String ADMIN_UPDATE_MESSAGE = "&9[TM] &bTokenManager &fv%s &7is now available for download! Download at: &c%s";
-    private static final String RESOURCE_URL = "https://www.spigotmc.org/resources/tokenmanager.8610/";
-
     @Getter
     private static TokenManagerPlugin instance;
 
@@ -60,10 +52,12 @@ public class TokenManagerPlugin extends JavaPlugin implements TokenManager, List
     private ShopManager shopManager;
     @Getter
     private WorthConfig worthConfig;
-
-    private volatile boolean updateAvailable;
-    private volatile String newVersion;
-
+    
+    @Override
+    public void onLoad() {
+        // Do Nothing
+    }
+    
     @Override
     public void onEnable() {
         instance = this;
@@ -215,7 +209,7 @@ public class TokenManagerPlugin extends JavaPlugin implements TokenManager, List
     public boolean addTokens(final Player player, final long amount) {
         final OptionalLong balance = getTokens(player);
 
-        if (!balance.isPresent()) {
+        if (balance.isEmpty()) {
             return false;
         }
 
@@ -227,7 +221,7 @@ public class TokenManagerPlugin extends JavaPlugin implements TokenManager, List
     public boolean removeTokens(final Player player, final long amount) {
         final OptionalLong balance = getTokens(player);
 
-        if (!balance.isPresent()) {
+        if (balance.isEmpty()) {
             return false;
         }
 
@@ -243,7 +237,7 @@ public class TokenManagerPlugin extends JavaPlugin implements TokenManager, List
     @Override
     public void addTokens(final String key, final long amount, final boolean silent) {
         dataManager.get(key, balance -> {
-            if (!balance.isPresent()) {
+            if (balance.isEmpty()) {
                 return;
             }
 
@@ -260,7 +254,7 @@ public class TokenManagerPlugin extends JavaPlugin implements TokenManager, List
     @Override
     public void removeTokens(final String key, final long amount, final boolean silent) {
         dataManager.get(key, balance -> {
-            if (!balance.isPresent()) {
+            if (balance.isEmpty()) {
                 return;
             }
 
@@ -381,14 +375,5 @@ public class TokenManagerPlugin extends JavaPlugin implements TokenManager, List
         }
 
         return null;
-    }
-
-    @EventHandler
-    public void on(final PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-
-        if (updateAvailable && (player.isOp() || player.hasPermission(Permissions.CMD_ADMIN))) {
-            player.sendMessage(StringUtil.color(String.format(ADMIN_UPDATE_MESSAGE, newVersion, RESOURCE_URL)));
-        }
     }
 }
