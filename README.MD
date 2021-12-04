@@ -3,8 +3,9 @@ This is a custom fork of [Realized/TokenManager](https://github.com/Realizedd/To
 
 ## Changes
 - Updated to 1.17.1, may break support for other versions.
-- Removed JSON Simple in place of Google GSON
+- Removed JSON Simple in place of Google GSON.
 - Fixed dependency issues and removed update checker.
+- Update MySQL Driver class to `com.mysql.cj.jdbc.Driver`.
 
 ### Disclaimer
 I do not intend to maintain this fork.
