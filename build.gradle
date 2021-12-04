@@ -1,120 +1,80 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
-    }
-}
-
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 group 'me.realized'
-version '3.2.6-SNAPSHOT'
-
+version '4.0.0-SirBlobman'
 compileJava.options.encoding = 'UTF-8'
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
-
-shadowJar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-clean.doFirst {
-    delete "$rootDir/out/"
-}
-
-tasks.withType(ShadowJar) {
-    destinationDir = file("$rootDir/out/")
-}
-
-//processResources {
-//    def group = project.group.toString() + "." + project.name.toLowerCase() + ".shaded"
-//
-//    from(sourceSets.main.resources.srcDirs) {
-//        include '**/*.yml'
-//        filter(ReplaceTokens, tokens: [NAME: project.name, VERSION: project.version, SHADED_GROUP: group])
-//    }
-//}
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
 
 repositories {
+    mavenLocal()
     mavenCentral()
 
     maven {
+        name 'sirblobman-public'
+        url 'https://nexus.sirblobman.xyz/repository/public/'
+    }
+
+    maven {
         name 'spigot-repo'
-        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
 
     maven {
-        name 'bungeecord-repo'
-        url 'https://oss.sonatype.org/content/repositories/snapshots'
+        name 'oss-sonatype-snapshots'
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
 
     maven {
-        name 'mvdw-repo'
-        url 'https://repo.mvdw-software.com/content/groups/public/'
-    }
-
-    maven {
-        name 'clip-repo'
+        name 'placeholderapi'
         url 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
 
     maven {
-        name 'codemc-public'
-        url 'https://repo.codemc.org/repository/maven-public/'
+        name 'mvdw-software'
+        url 'https://repo.mvdw-software.com/content/groups/public/'
     }
 }
 
 dependencies {
     // Project Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.20'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+    // Spigot API
+    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
 
-    // Provided Dependencies
-    compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
-    compileOnly 'net.milkbowl.vault:VaultAPI:1.7'
-    compileOnly 'me.clip:placeholderapi:2.10.5'
-    compileOnly ('be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT') { transitive = false }
+    // Spigot Plugin Dependencies
+    compileOnly('net.milkbowl.vault:VaultAPI:1.7') {
+        transitive = false
+    }
+
+    compileOnly('be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT') {
+        transitive = false
+    }
+
+    compileOnly 'me.clip:placeholderapi:2.10.9'
 
     // Shaded Dependencies
-    implementation 'redis.clients:jedis:2.9.0'
-    implementation 'org.apache.commons:commons-pool2:2.4.2'
-    implementation 'com.zaxxer:HikariCP:2.7.8'
-    implementation 'org.slf4j:slf4j-nop:1.7.25'
-    implementation 'org.bstats:bstats-bukkit:1.7'
-    // implementation 'org.inventivetalent.spiget-update:bukkit:1.4.2-SNAPSHOT'
+    implementation 'redis.clients:jedis:3.7.0'
+    implementation 'org.apache.commons:commons-pool2:2.11.1'
+    implementation 'com.zaxxer:HikariCP:5.0.0'
+    implementation 'org.slf4j:slf4j-nop:2.0.0-alpha5'
+    implementation 'org.bstats:bstats-bukkit:2.2.1'
 }
 
 shadowJar {
-    baseName = 'TokenManager'
-    classifier = null
-
-    dependencies {
-        include(dependency('redis.clients:.*'))
-        include(dependency('org.apache.commons:.*'))
-        include(dependency('com.zaxxer:.*'))
-        include(dependency('org.slf4j:.*'))
-//        include(dependency('org.bstats:.*'))
-//        include(dependency('org.inventivetalent.spiget-update:.*'))
-    }
-
-    def group = project.group.toString() + "." + project.name.toLowerCase() + ".shaded."
-
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    
+    def group = project.group.toString() + '.' + project.name.toLowerCase() + '.shaded.'
+    
     relocate 'redis.clients', group + 'redis.clients'
     relocate 'org.apache.commons.pool2', group + 'apache.commons.pool2'
     relocate 'com.zaxxer.hikari', group + 'zaxxer.hikari'
-    relocate 'org.slf4j', group + "slf4j"
-//    relocate 'org.bstats', group + 'bstats'
-//    relocate 'org.inventivetalent.update.spiget', group + 'update.spiget'
+    relocate 'org.slf4j', group + 'slf4j'
+    relocate 'org.bstats', group + 'bstats'
 }
 
 build.dependsOn(shadowJar)
