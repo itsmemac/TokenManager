@@ -4,7 +4,7 @@ description: "A fork of Realized/TokenManager made for 1.17.1."
 website: "https://www.sirblobman.xyz/"
 
 main: "me.realized.tokenmanager.TokenManagerPlugin"
-version: "4.0.0-SirBlobman"
+version: "4.0.1-SirBlobman"
 api-version: "1.17"
 
 libraries:
