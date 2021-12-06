@@ -1,12 +1,12 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 group 'me.realized'
 version '4.0.1-SirBlobman'
 compileJava.options.encoding = 'UTF-8'
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 repositories {
     mavenLocal()
@@ -57,28 +57,15 @@ dependencies {
 
     compileOnly 'me.clip:placeholderapi:2.10.9'
 
-    // Shaded Dependencies
-    implementation('redis.clients:jedis:3.7.0') {
-        transitive = false
+    // Other Dependencies
+    compileOnly('redis.clients:jedis:3.7.0') {
+        exclude group: 'org.slf4j'
     }
 
-    implementation('com.zaxxer:HikariCP:5.0.0') {
-        transitive = false
+    compileOnly('com.zaxxer:HikariCP:5.0.0') {
+        exclude group: 'org.slf4j'
     }
 
-    implementation 'org.apache.commons:commons-pool2:2.11.1'
-    implementation 'org.bstats:bstats-bukkit:2.2.1'
+    compileOnly 'org.apache.commons:commons-pool2:2.11.1'
+    compileOnly 'org.bstats:bstats-bukkit:2.2.1'
 }
-
-shadowJar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    
-    def group = project.group.toString() + '.' + project.name.toLowerCase() + '.shaded.'
-    
-    relocate 'redis.clients', group + 'redis.clients'
-    relocate 'org.apache.commons.pool2', group + 'apache.commons.pool2'
-    relocate 'com.zaxxer.hikari', group + 'zaxxer.hikari'
-    relocate 'org.bstats', group + 'bstats'
-}
-
-build.dependsOn(shadowJar)

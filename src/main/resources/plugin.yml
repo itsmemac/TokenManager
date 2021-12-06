@@ -7,6 +7,12 @@ main: "me.realized.tokenmanager.TokenManagerPlugin"
 version: "4.0.0-SirBlobman"
 api-version: "1.17"
 
+libraries:
+  - "org.apache.commons:commons-pool2:2.11.1"
+  - "com.zaxxer:HikariCP:5.0.0"
+  - "redis.clients:jedis:3.7.0"
+  - "org.bstats:bstats-bukkit:2.2.1"
+
 softdepend:
   - "MVdWPlaceholderAPI"
   - "PlaceholderAPI"
