@@ -3,10 +3,10 @@ plugins {
 }
 
 group 'me.realized'
-version '4.0.1-SirBlobman'
+version '4.0.2-itsmemac'
 compileJava.options.encoding = 'UTF-8'
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenLocal()
@@ -44,7 +44,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     // Spigot API
-    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
 
     // Spigot Plugin Dependencies
     compileOnly('net.milkbowl.vault:VaultAPI:1.7') {
@@ -55,17 +55,17 @@ dependencies {
         transitive = false
     }
 
-    compileOnly 'me.clip:placeholderapi:2.10.9'
+    compileOnly 'me.clip:placeholderapi:2.11.1'
 
     // Other Dependencies
-    compileOnly('redis.clients:jedis:3.7.0') {
+    compileOnly('redis.clients:jedis:4.2.1') {
         exclude group: 'org.slf4j'
     }
 
-    compileOnly('com.zaxxer:HikariCP:5.0.0') {
+    compileOnly('com.zaxxer:HikariCP:5.0.1') {
         exclude group: 'org.slf4j'
     }
 
     compileOnly 'org.apache.commons:commons-pool2:2.11.1'
-    compileOnly 'org.bstats:bstats-bukkit:2.2.1'
+    compileOnly 'org.bstats:bstats-bukkit:3.0.0'
 }
