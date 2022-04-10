@@ -1,15 +1,13 @@
 # Token Manager
-This is a custom fork of [Realized/TokenManager](https://github.com/Realizedd/TokenManager).
+This is a custom fork of [SirBlobman/TokenManager](https://github.com/SirBlobman/TokenManager) which is a fork of [Realizedd/TokenManager](https://github.com/Realizedd/TokenManager)
 
 ## Changes
-- Updated to 1.17.1, may break support for other versions.
-- Removed JSON Simple in place of Google GSON.
-- Fixed dependency issues and removed update checker.
-- Update MySQL Driver class to `com.mysql.cj.jdbc.Driver`.
+- Updated to 1.18.2, may break support for other versions.
+- Updated dependencies to latest.
 
 ### Disclaimer
-I do not intend to maintain this fork.
-The source code is available for anyone else that wishes to make changes or continue updating it.
+I have updated this repo to use in my server and confirmed to be working on 1.18.2
+You are free to give it a try and fix any errors or make a pull request
 
 ### Compilation Instructions
 - Command Prompt: `CALL gradlew.bat clean build`
